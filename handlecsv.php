@@ -632,8 +632,8 @@ class handleCSV
         }
     	// $this->createChildCSV_p($this->fileName);
 
-		// $this->importProducts();
-  // 		$this->importOthers();
+		$this->importProducts();
+   		$this->importOthers();
     	$time_all2 = microtime(true);
 
     	// handleCSV::remove_temp_file();
