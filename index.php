@@ -1,7 +1,7 @@
 <?php 
-include("handlecsv.php");
+include("handleCSV.php");
 
-$fileName = "1_on_60";
+$fileName = "Products_half_quarter1";
 
 $import = new handleCSV($fileName);
 $import->import_all();

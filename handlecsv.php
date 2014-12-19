@@ -51,8 +51,8 @@ class handleCSV
     //Dung de sort cac phan tu theo 1 cot cho trc.
     //Ko the dung usort vi day la mang 2 chieu.
 	function array_sort_bycolumn(&$array,$column,$dir = 'asc') {
-	    foreach($array as $a) {
-	    	$sortcol[$a[$column]][] = $a;
+	    foreach($array as $key) {
+            $sortcol[$key[$column]][] = $key;
 	    }
 	    ksort($sortcol);
 	    foreach($sortcol as $col) {
@@ -60,7 +60,6 @@ class handleCSV
 	        	$newarr[] = $row;
 	        }
 	    }
-
 	    if($dir=='desc') $array = array_reverse($newarr);
 	    else $array = $newarr;
 	}
@@ -201,7 +200,7 @@ class handleCSV
 	            }
   		}
     	fclose($originCSV);
-        handleCSV::deduplicateInArray($final_color,"color",$this->colorValue);
+        // handleCSV::deduplicateInArray($final_color,"color",$this->colorValue);
         unset($final_color);
 
     	$originCSV = fopen($fileName.".csv","r");
@@ -213,7 +212,7 @@ class handleCSV
             }
     	}
     	fclose($originCSV);
-        handleCSV::deduplicateInArray($final_size,"size",$this->sizeValue);
+        // handleCSV::deduplicateInArray($final_size,"size",$this->sizeValue);
         unset($final_size);
 
     	$originCSV = fopen($fileName.".csv","r");
@@ -225,7 +224,7 @@ class handleCSV
 	    	}
     	}
     	fclose($originCSV);
-        handleCSV::deduplicateInArray($final_category,"category");
+        // handleCSV::deduplicateInArray($final_category,"category");
         unset($final_category);
 
     	$time_add_to_final2 = microtime(true);
@@ -623,22 +622,15 @@ class handleCSV
         $file_color = fopen("files/temp_color.csv", "w+");
         fclose($file_color);
 
-    	$time_split1 = microtime(true);
-        $child = $this->splitFile();
-    	$time_split2 = microtime(true);
+    	$this->createChildCSV_p($this->fileName);
 
-        for ($i=0; $i < $child; $i++) { 
-            $this->createChildCSV_p($this->fileName);
-        }
-    	// $this->createChildCSV_p($this->fileName);
-
-		$this->importProducts();
-   		$this->importOthers();
+        $this->importProducts();
+        $this->importOthers();
     	$time_all2 = microtime(true);
 
     	// handleCSV::remove_temp_file();
 
-    	echo "<br>time_split : ".($time_split2-$time_split1);
+    	// echo "<br>time_split : ".($time_split2-$time_split1);
     	echo "<br>time_all : ".($time_all2-$time_all1);
     }
 
@@ -650,9 +642,8 @@ class handleCSV
 
         $pivot_array="";
         foreach($array as $key) {
-            
-        	if(@($key[1][0].$key[1][1])!=$pivot_array){
-        		$pivot_array = ($key[1][0].$key[1][1]);
+            if(@($key[1][0].$key[1][1])!=$pivot_array){
+                $pivot_array = ($key[1][0].$key[1][1]);
                 //set lại id của những category,color,size trùng nhau cho bằng nhau
         		handleCSV::array_unique_multidimensional($array_s,1,count($array_s));
                 // handleCSV::array_delete_repeate($array_s,count($array_s));
